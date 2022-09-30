@@ -27,6 +27,3 @@ readitClose.onclick = e => {
 
 // Append button to body
 document.getElementsByTagName('body')[0].append(readitClose)
-
-
-

@@ -1,5 +1,6 @@
 // Modules
 const fs = require('fs')
+const {shell} = require('electron')
 
 // Dom Nodes
 let items = document.getElementById('items')
@@ -54,6 +55,7 @@ exports.getSelectedItem = () => {
     let itemIndex = 0
     let child = currentItem
     while ((child = child.previousSibling) != null) itemIndex++
+    
 
     // Return item and index
     return { node: currentItem, index: itemIndex }
@@ -91,6 +93,21 @@ exports.changeSelection = direction => {
         currentItem.node.classList.remove('selected')
         currentItem.node.nextSibling.classList.add('selected')
     }
+}
+
+//  open item in native browser
+exports.openNative = () => {
+    // Only if we have items
+    if (!this.storage.length) return
+
+    // Get selected item
+    let selectedItem = this.getSelectedItem()
+
+    // Get item's url
+    let contentURL = selectedItem.node.dataset.url
+
+    // Open item natively
+    shell.openExternal(contentURL).then(r => console.log(r))
 }
 
 // Open selected item

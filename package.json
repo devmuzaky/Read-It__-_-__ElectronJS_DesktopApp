@@ -1,12 +1,13 @@
 {
-  "name": "read-it",
+  "name": "Readit",
   "version": "1.0.0",
   "description": "Productivity",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "watch": "nodemon --exec electron .",
-    "reset": "git reset --hard"
+    "reset": "git reset --hard",
+    "build": "electron-builder --help"
   },
   "repository": "",
   "keywords": [
@@ -17,9 +18,23 @@
   "author": "Mohamed Zaky",
   "devDependencies": {
     "electron": "^6.1.12",
+    "electron-builder": "^23.3.3",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
     "electron-window-state": "^5.0.3"
-  }
+  },
+    "build": {
+        "appId": "com.mohamedzaky.readit",
+        "productName": "Readit",
+        "directories": {
+        "output": "build"
+        },
+        "mac": {
+        "category": "public.app-category.productivity"
+        },
+        "win": {
+        "target": "zip"
+        }
+    }
 }

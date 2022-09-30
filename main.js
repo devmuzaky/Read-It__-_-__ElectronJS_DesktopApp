@@ -2,6 +2,8 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
 const windowStateKeeper = require('electron-window-state')
 const readItem = require('./readItem')
+const appMenu = require('./menu')
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -33,10 +35,12 @@ function createWindow () {
       // --- !! IMPORTANT !! ---
       // Disable 'contextIsolation' to allow 'nodeIntegration'
       // 'contextIsolation' defaults to "true" as from Electron v12
-      contextIsolation: false,
       nodeIntegration: true
     }
   })
+
+  // Create main menu App
+    appMenu(mainWindow.webContents)
 
   // Load index.html into the new BrowserWindow
   mainWindow.loadFile('renderer/main.html')

@@ -16,6 +16,33 @@ let addItem = document.getElementById('add-item')
 let itemUrl = document.getElementById('url')
 let search = document.getElementById('search')
 
+
+// Open modal from menu
+ipcRenderer.on('menu-show-modal', () => {
+    showModal.click()
+})
+
+// Open selected item
+ipcRenderer.on('menu-open-item', () => {
+    items.open()
+})
+
+// Delete item from menu
+ipcRenderer.on('menu-delete-item', () => {
+    let selectedItem = items.getSelectedItem()
+    items.deleteItem(selectedItem.index)
+})
+
+// Open item in native browser
+ipcRenderer.on('menu-open-item-native', () => {
+    items.openNative()
+})
+
+// Focus search from menu
+ipcRenderer.on('menu-focus-search', () => {
+    search.focus()
+})
+
 // Filter items with search
 search.addEventListener('keyup', e => {
     // Loop items
