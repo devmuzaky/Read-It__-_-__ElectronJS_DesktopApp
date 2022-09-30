@@ -105,8 +105,20 @@ main {
   border-bottom: 2px lightgray solid;
   background: #FAFAFA;
   padding: 10px;
+  border-left: 10px solid lightgrey;
+  -webkit-user-select: none;
+}
+
+.read-item:hover {
+  background: #EAEAEA;
+  cursor: pointer;
 }
 .read-item img{
   width: 20px;
   margin-right: 25px;
+}
+
+.selected {
+  background: #EAEAEA;
+  border-left: 10px solid dodgerblue;
 }
