@@ -13,6 +13,52 @@ fs.readFile(`${__dirname}/reader.js`, (err, data) => {
 // Track items in storage
 exports.storage = JSON.parse(localStorage.getItem('readit-items')) || []
 
+// Listen for "done" message from reader window
+window.addEventListener('message', e => {
+
+    // Check for correct message
+    if (e.data.action === 'delete-reader-item') {
+        // Delete item at given index
+        this.deleteItem(e.data.itemIndex)
+
+        // Close the readr window
+        e.source.close()
+    }
+
+})
+
+// Delete item at given index
+exports.deleteItem = itemIndex => {
+    // Remove item from DOM
+    items.removeChild( items.childNodes[itemIndex] )
+
+    // Remove item from storage
+    this.storage.splice(itemIndex, 1)
+
+    // Persist storage
+    this.save()
+
+    // If we have no items left, select the "Add new" button
+    if (!this.storage.length) {
+        let newSelectedItemIndex = (itemIndex === 0) ? 0 : itemIndex - 1
+        document.getElementsByClassName('read-item')[newSelectedItemIndex].classList.add('selected')
+    }
+}
+
+// Get selected item
+exports.getSelectedItem = () => {
+    // Get current selected item
+    let currentItem = document.getElementsByClassName('read-item selected')[0]
+
+    // Get item index
+    let itemIndex = 0
+    let child = currentItem
+    while ((child = child.previousSibling) != null) itemIndex++
+
+    // Return item and index
+    return { node: currentItem, index: itemIndex }
+}
+
 // Persist items in storage
 exports.save = () => {
     // Only if storage isn't empty
@@ -25,7 +71,7 @@ exports.save = () => {
 // Select item
 exports.select = e => {
     // Remove current selected item
-    document.getElementsByClassName('read-item selected')[0].classList.remove('selected')
+   this.getSelectedItem().node.classList.remove('selected')
 
     // Add selected class to clicked item
     e.currentTarget.classList.add('selected')
@@ -34,16 +80,16 @@ exports.select = e => {
 // Change selection with up/down keys
 exports.changeSelection = direction => {
     // Get Currently selected item
-    let currentItem = document.getElementsByClassName('read-item selected')[0]
+    let currentItem = this.getSelectedItem()
 
     // Handle up/down
     if (direction === 'ArrowUp' && currentItem.previousSibling) {
-        currentItem.classList.remove('selected')
-        currentItem.previousSibling.classList.add('selected')
+        currentItem.node.classList.remove('selected')
+        currentItem.node.previousSibling.classList.add('selected')
     }
     else if (direction === 'ArrowDown' && currentItem.nextSibling) {
-        currentItem.classList.remove('selected')
-        currentItem.nextSibling.classList.add('selected')
+        currentItem.node.classList.remove('selected')
+        currentItem.node.nextSibling.classList.add('selected')
     }
 }
 
@@ -53,10 +99,10 @@ exports.open = () => {
     if (!this.storage.length) return
 
     // Get selected item
-    let selectedItem = document.getElementsByClassName('read-item selected')[0]
+    let selectedItem = this.getSelectedItem()
 
     // Get item's url
-    let contentURL = selectedItem.dataset.url
+    let contentURL = selectedItem.node.dataset.url
 
     // Open item in proxy BrowserWindow
     let readerWin = window.open(contentURL, '', `
@@ -70,7 +116,7 @@ exports.open = () => {
     ` )
 
     // inject javascript to reader window
-    readerWin.eval(readerJS)
+    readerWin.eval(readerJS.replace('{{index}}', selectedItem.index))
 
 }
 
