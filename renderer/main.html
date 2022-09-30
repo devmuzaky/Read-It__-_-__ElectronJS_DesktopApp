@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- !! IMPORTANT !! -->
+    <!-- Content-Security-Policy no longer required. Will show warning in devtools. Can be ignored -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'"> -->
+    <title>Readit</title>
+    <link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+
+    <header>
+      <button id="show-modal">+</button>
+      <input type="text" id="search" placeholder="Search">
+    </header>
+
+    <main>
+      <p id="no-items">No Items</p>
+      <div id="items">
+
+      </div>
+    </main>
+
+    <div id="modal">
+      <input type="text" id="url" placeholder="Enter URL">
+      <button id="add-item">Add Item</button>
+      <button id="close-modal">Cancel</button>
+    </div>
+
+    <script>
+      // You can also require other files to run in this process
+      require('./app')
+    </script>
+  </body>
+</html>

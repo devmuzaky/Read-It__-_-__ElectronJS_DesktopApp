@@ -1,0 +1,25 @@
+{
+  "name": "read-it",
+  "version": "1.0.0",
+  "description": "Productivity",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "watch": "nodemon --exec electron .",
+    "reset": "git reset --hard"
+  },
+  "repository": "",
+  "keywords": [
+    "Electron",
+    "Master Electron",
+    "demo"
+  ],
+  "author": "Mohamed Zaky",
+  "devDependencies": {
+    "electron": "^6.1.12",
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "electron-window-state": "^5.0.3"
+  }
+}
